@@ -75,3 +75,43 @@ export const authAPI = {
 	},
 };
 
+/**
+ * Career API functions
+ */
+export const careerAPI = {
+  /**
+   * Send fresher/jobseeker answers for suggestions
+   * @param {Object} payload - { answer1..answer5 }
+   */
+  async suggestions(payload) {
+    const response = await apiRequest('/api/career/suggestions', {
+      method: 'POST',
+      body: JSON.stringify(payload),
+    });
+    return parseResponse(response);
+  },
+
+  /**
+   * Fetch YouTube/resource suggestions
+   * @param {string} query
+   */
+  async resources(query) {
+    const response = await apiRequest(`/api/career/resources?q=${encodeURIComponent(query)}`, {
+      method: 'GET',
+    });
+    return parseResponse(response);
+  },
+
+  /**
+   * Generate a roadmap
+   * @param {Object} payload
+   */
+  async generateRoadmap(payload) {
+    const response = await apiRequest('/api/career/generate-roadmap', {
+      method: 'POST',
+      body: JSON.stringify(payload),
+    });
+    return parseResponse(response);
+  },
+};
+
