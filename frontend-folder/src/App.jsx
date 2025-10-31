@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Routes, Route, Link, useNavigate } from 'react-router-dom'
+import { Routes, Route, Link } from 'react-router-dom'
 import './App.css'
 
 function App() {
@@ -15,8 +15,8 @@ function App() {
 					<ul className="nav-links">
 						<li><Link to="/">Home</Link></li>
 						<li><Link to="/job">Job Seekers</Link></li>
-						<li><a href="#companies" onClick={() => setCurrentPage('companies')}>Companies</a></li>
-						<li><a href="#career-guide" onClick={() => setCurrentPage('career-guide')}>Career Guide</a></li>
+						<li><a href="#companies">Companies</a></li>
+						<li><a href="#career-guide">Career Guide</a></li>
 					</ul>
 					<div className="nav-actions">
 						<button className="btn-secondary">Sign In</button>
@@ -28,6 +28,7 @@ function App() {
 			<Routes>
 				<Route path="/" element={<HomePage />} />
 				<Route path="/job" element={<JobSeekerPage />} />
+				<Route path="/fresher" element={<FresherPage />} />
 			</Routes>
 
 			{/* Footer */}
@@ -96,8 +97,8 @@ function HomePage() {
 						they need to launch their careers
 					</p>
 					<div className="hero-cta">
-						<Link to="/job" className="btn-hero-primary">I'm Job Seeker</Link>
-						<button className="btn-hero-secondary">I'm Hiring</button>
+						<Link to="/fresher" className="btn-hero-primary">I'm Fresher</Link>
+						<Link to="/job" className="btn-hero-secondary">I'm Skilled</Link>
 					</div>
 					<div className="hero-stats">
 						<div className="stat">
@@ -317,3 +318,127 @@ function JobSeekerPage() {
 }
 
 export default App
+
+function FresherPage() {
+	const [stepIndex, setStepIndex] = useState(0)
+	const [answers, setAnswers] = useState({
+		fullName: '',
+		email: '',
+		highestEducation: '',
+		desiredField: '',
+		interests: '',
+	})
+
+	function update(field, value) {
+		setAnswers(prev => ({ ...prev, [field]: value }))
+	}
+
+	function next() {
+		setStepIndex(i => Math.min(i + 1, questions.length - 1))
+	}
+
+	function back() {
+		setStepIndex(i => Math.max(i - 1, 0))
+	}
+
+	function submit(e) {
+		e.preventDefault()
+		console.log('Fresher Answers:', answers)
+		alert('Fresher responses captured. Check console for the object.')
+	}
+
+	const questions = [
+		{
+			key: 'fullName',
+			label: 'Full Name',
+			placeholder: 'e.g. Sita Sharma',
+			type: 'text',
+			required: true,
+		},
+		{
+			key: 'email',
+			label: 'Email',
+			placeholder: 'e.g. sita@example.com',
+			type: 'email',
+			required: true,
+		},
+		{
+			key: 'highestEducation',
+			label: 'Highest Education',
+			placeholder: 'e.g. BSc Computer Science',
+			type: 'text',
+			required: false,
+		},
+		{
+			key: 'desiredField',
+			label: 'Desired Field',
+			placeholder: 'e.g. Frontend, Design, Marketing',
+			type: 'text',
+			required: false,
+		},
+		{
+			key: 'interests',
+			label: 'Top Interests/Skills',
+			placeholder: 'e.g. React, UI, Content Writing',
+			type: 'textarea',
+			required: false,
+		},
+	]
+
+	const current = questions[stepIndex]
+
+	return (
+		<>
+			<section className="hero">
+				<div className="hero-content">
+					<h1 className="hero-title">
+						Tell Us About
+						<span className="gradient-text"> You</span>
+					</h1>
+					<p className="hero-subtitle">
+						Answer a few quick questions to personalize your journey
+					</p>
+				</div>
+			</section>
+
+			<section className="features questionnaire">
+				<div className="container">
+					<h2 className="section-title">Fresher Questionnaire</h2>
+					<form onSubmit={submit}>
+						<div className="question-card">
+							<label htmlFor={current.key}>{current.label}</label>
+							{current.type === 'textarea' ? (
+								<textarea
+									id={current.key}
+									rows={4}
+									placeholder={current.placeholder}
+									value={answers[current.key]}
+									onChange={(e) => update(current.key, e.target.value)}
+								/>
+							) : (
+								<input
+									id={current.key}
+									type={current.type}
+									placeholder={current.placeholder}
+									value={answers[current.key]}
+									onChange={(e) => update(current.key, e.target.value)}
+									{...(current.required ? { required: true } : {})}
+								/>
+							)}
+
+							<div className="question-actions">
+								<button type="button" className="btn-secondary" onClick={back} disabled={stepIndex === 0}>Back</button>
+								{stepIndex < questions.length - 1 ? (
+									<button type="button" className="btn-primary" onClick={next}>Next</button>
+								) : (
+									<button type="submit" className="btn-primary">Submit</button>
+								)}
+							</div>
+							<p style={{ marginTop: '0.5rem', color: '#475569' }}>Step {stepIndex + 1} of {questions.length}</p>
+						</div>
+					</form>
+				</div>
+			</section>
+		</>
+	)
+}
