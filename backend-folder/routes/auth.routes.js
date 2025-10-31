@@ -6,7 +6,7 @@ import {
 } from "../controllers/userController.js";
 import { verifyToken } from "../middlewares/isAuth.js";
 
-const router = Router();
+export const router = Router();
 
 router.post("/signup", registerUser);
 router.post("/login", loginUser);
