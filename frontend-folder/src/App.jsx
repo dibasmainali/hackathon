@@ -1,6 +1,8 @@
 import { useState } from 'react'
 import { Routes, Route, Link } from 'react-router-dom'
 import './App.css'
+import LoginPage from './pages/LoginPage'
+import SignupPage from './pages/SignupPage'
 
 function App() {
 	return (
@@ -19,8 +21,8 @@ function App() {
 						<li><a href="#career-guide">Career Guide</a></li>
 					</ul>
 					<div className="nav-actions">
-						<button className="btn-secondary">Sign In</button>
-						<button className="btn-primary">Get Started</button>
+						<Link to="/login" className="btn-secondary">Sign In</Link>
+						<Link to="/signup" className="btn-primary">Get Started</Link>
 					</div>
 				</div>
 			</nav>
@@ -29,6 +31,8 @@ function App() {
 				<Route path="/" element={<HomePage />} />
 				<Route path="/job" element={<JobSeekerPage />} />
 				<Route path="/fresher" element={<FresherPage />} />
+				<Route path="/login" element={<LoginPage />} />
+				<Route path="/signup" element={<SignupPage />} />
 			</Routes>
 
 			{/* Footer */}
@@ -449,3 +453,4 @@ function FresherPage() {
 		</>
 	)
 }
+
