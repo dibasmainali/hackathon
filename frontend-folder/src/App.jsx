@@ -386,6 +386,7 @@ function FresherPage() {
 	]
 
 	const current = questions[stepIndex]
+	const percent = Math.round(((stepIndex + 1) / questions.length) * 100)
 
 	return (
 		<>
@@ -403,9 +404,16 @@ function FresherPage() {
 
 			<section className="features questionnaire">
 				<div className="container">
-					<h2 className="section-title">Fresher Questionnaire</h2>
+					<div className="progress-header">
+						<span>Question {stepIndex + 1} of {questions.length}</span>
+						<span>{percent}%</span>
+					</div>
+					<div className="progress-track" aria-hidden="true">
+						<div className="progress-fill" style={{ width: `${percent}%` }} />
+					</div>
+
 					<form onSubmit={submit}>
-						<div className="question-card">
+						<div className="question-card fresher-card">
 							<label htmlFor={current.key}>{current.label}</label>
 							{current.type === 'textarea' ? (
 								<textarea
@@ -429,12 +437,11 @@ function FresherPage() {
 							<div className="question-actions">
 								<button type="button" className="btn-secondary" onClick={back} disabled={stepIndex === 0}>Back</button>
 								{stepIndex < questions.length - 1 ? (
-									<button type="button" className="btn-primary" onClick={next}>Next</button>
+									<button type="button" className="btn-gradient" onClick={next}>Next</button>
 								) : (
-									<button type="submit" className="btn-primary">Submit</button>
+									<button type="submit" className="btn-gradient">Submit</button>
 								)}
 							</div>
-							<p style={{ marginTop: '0.5rem', color: '#475569' }}>Step {stepIndex + 1} of {questions.length}</p>
 						</div>
 					</form>
 				</div>
