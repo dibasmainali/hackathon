@@ -8,19 +8,27 @@ const userSchema = new mongoose.Schema({
   address: { type: String },
   skills: { type: [String], default: [] },
   description: { type: String },
-  experience: { type: String },
 
-  // Here's the part you're asking for 👇
+  // ✅ FIXED HERE
+  experience: [
+    {
+      company: { type: String, required: true },
+      role: { type: String, required: true },
+      duration: { type: String },
+      details: { type: String }
+    }
+  ],
+
   education: [
     {
       degree: { type: String, required: true },
       institution: { type: String, required: true },
       startYear: { type: String },
-      endYear: { type: String },
+      endYear: { type: String }
     }
   ],
 
-  resume: { type: String }, // could be a URL or path to uploaded CV
+  resume: { type: String },
 }, { timestamps: true });
 
 export default mongoose.model("User", userSchema);
